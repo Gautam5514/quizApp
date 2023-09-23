@@ -82,66 +82,68 @@ const quizData = [
 },
 ];
 
-let index = 0;
-let correct = 0,
-incorrect = 0,
-total = quizData.length;
-let questionBox = document.getElementById("questionBox");
-let allInputs = document.querySelectorAll("input[type='radio']")
+let index = 0; // Initialize the question index.
+let correct = 0, // Initialize the count of correct answers.
+incorrect = 0, // Initialize the count of incorrect answers.
+total = quizData.length; // Calculate the total number of questions.
+let questionBox = document.getElementById("questionBox"); // Get the question box element.
+let allInputs = document.querySelectorAll("input[type='radio']"); // Get all radio input elements.
+
 const loadQuestion = () => {
-if (total === index) {
-    return quizEnd()
-}
-reset()
-const data = quizData[index]
-questionBox.innerHTML = `${index + 1}) ${data.question}`
-allInputs[0].nextElementSibling.innerText = data.a
-allInputs[1].nextElementSibling.innerText = data.b
-allInputs[2].nextElementSibling.innerText = data.c
-allInputs[3].nextElementSibling.innerText = data.d
+    if (total === index) {
+    return quizEnd(); // Check if all questions have been answered, and if so, end the quiz.
+    }
+  reset(); // Reset radio inputs.
+  const data = quizData[index]; // Get the current question data.
+  questionBox.innerHTML = `${index + 1}) ${data.question}`; // Display the current question.
+  allInputs[0].nextElementSibling.innerText = data.a; // Display option A.
+  allInputs[1].nextElementSibling.innerText = data.b; // Display option B.
+  allInputs[2].nextElementSibling.innerText = data.c; // Display option C.
+  allInputs[3].nextElementSibling.innerText = data.d; // Display option D.
 }
 
 document.querySelector("#submit").addEventListener(
-"click",
-function() {
-    const data = quizData[index]
-    const ans = getAnswer()
+    "click",
+    function() {
+    const data = quizData[index]; // Get the current question data.
+    const ans = getAnswer(); // Get the selected answer.
     if (ans === data.correct) {
-        correct++;
+      correct++; // Increment correct count if the answer is correct.
     } else {
-        incorrect++;
+      incorrect++; // Increment incorrect count if the answer is incorrect.
     }
-    index++;
-    loadQuestion()
-}
-)
+    index++; // Move to the next question.
+    loadQuestion(); // Load the next question.
+    }
+);
 
 const getAnswer = () => {
-let ans;
-allInputs.forEach(
+    let ans;
+    allInputs.forEach(
     (inputEl) => {
         if (inputEl.checked) {
-            ans = inputEl.value;
-        }
+        ans = inputEl.value; // Get the selected answer value.
     }
-)
-return ans;
+    }
+);
+  return ans; // Return the selected answer.
 }
 
 const reset = () => {
-allInputs.forEach(
+    allInputs.forEach(
     (inputEl) => {
-        inputEl.checked = false;
+      inputEl.checked = false; // Uncheck all radio inputs.
     }
-)
+    );
 }
 
 const quizEnd = () => {
-// console.log(document.getElementsByClassName("container"));
-document.getElementsByClassName("container")[0].innerHTML = `
+  // Display the final score.
+    document.getElementsByClassName("container")[0].innerHTML = `
     <div class="col">
         <h3 class="w-100">  Score ${correct} / ${total} </h3>
     </div>
-`
+    `;
 }
-loadQuestion(index);
+
+loadQuestion(index); // Load the first question.
